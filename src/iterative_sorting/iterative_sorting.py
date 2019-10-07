@@ -35,34 +35,42 @@ def bubble_sort( arr ):
 
 # STRETCH: implement the Count Sort function below
 def count_sort( arr, maximum=-1 ):
-    # store how many times each number appears
-    store = {}
-    for i in arr:
-        if i in store:
-            store[i] += 1
-        else:
-            store[i] = 1
-    
-    # make a list the length of my max value ie from 0 to max(arr)
-    l = [0] * (max(arr)+1)
+    # make sure array isnt sorted by fiat
+    if len(arr) > 0:
+        #make sure no negatives
+        for i in arr:
+            if i < 0:
+                return 'Error, negative numbers not allowed in Count Sort'
+        # store appearances of elements in dictionary
+        store = {}
+        for i in arr:
+            if i in store:
+                store[i] += 1
+            else:
+                store[i] = 1
 
-    
-    # insert values of the dict into the list
-    for k in store:
-        l[k] = store[k]
+        # create list length of data
+        l = [0] * (max(arr)+1)
 
-    # sum previous elements of list to current value of list
-    cum_sum = 0
-    for i in range(0, len(l)):
-        cum_sum += l[i]
-        l[i] = cum_sum
+        # initially fill list with appearances of each element
+        for k in store:
+            l[k] = store[k]
 
+        # summing appearances for each number
+        sum = 0
+        for i in range(0, len(l)):
+            sum += l[i]
+            l[i] = sum
+        arr = [None]*len(l)
 
-    # use store dict and summed list to output positions into new list
-    arr = [None]*len(l)
-    for k in store:
-
-        arr[l[k]-1] = k
-
-
+        # iterate over store and use value in summed list to output final positions
+        for k in store:
+            while store[k] != 0:
+                arr[l[k]-1] = k
+                print(store[k])
+                store[k] -= 1
+                print(arr)
+        arr = [a for a in arr if not a == None]
     return arr
+
+print(count_sort([0, 5, 6, 13, 14, 9, 0, 2, 3, 3]))
